@@ -5,6 +5,13 @@ const cors = require("cors");
 const helmet = require('helmet');
 const dbconfig = require('./api/config/db.config');
 
+app.disable('x-powered-by')
+
+app.use((request, response, next) => {
+  response.set('X-Content-Type-Options', 'nosniff');
+  next();
+});
+
 app.use(helmet());
 
 // const corsOptions = {
