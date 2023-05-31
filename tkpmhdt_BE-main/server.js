@@ -14,11 +14,10 @@ app.use((request, response, next) => {
 
 app.use(helmet());
 
-// const corsOptions = {
-//     origin: "http://localhost:8080"
-// };
-  
-app.use(cors());
+
+app.use(cors({
+    origin: 'http://localhost:3000'
+}));
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
