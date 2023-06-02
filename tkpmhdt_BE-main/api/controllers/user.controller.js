@@ -67,8 +67,9 @@ module.exports = {
                     message: "Wrong Password!"
                 });
             }
-
-            var token = jwt.sign({ id: data.id, isAdmin : data.isAdmin }, config.secret, {
+            const token1 = config.secret; // Chuỗi token cần mã hóa
+            const encodedToken = Buffer.from(token1).toString('base64');
+            var token = jwt.sign({ id: data.id, isAdmin : data.isAdmin, token: encodedToken}, config.secret, {
                 expiresIn: 60*60*24 // 24 hours
             });
             res.status(200).send({

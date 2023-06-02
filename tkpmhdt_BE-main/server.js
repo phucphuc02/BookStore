@@ -4,8 +4,9 @@ const bodyParser = require('body-parser')
 const cors = require("cors");
 const helmet = require('helmet');
 const dbconfig = require('./api/config/db.config');
+const https = require("https");
+const fs = require("fs");
 
-app.disable('x-powered-by')
 
 app.use((request, response, next) => {
   response.set('X-Content-Type-Options', 'nosniff');
@@ -15,9 +16,12 @@ app.use((request, response, next) => {
 app.use(helmet());
 
 
-app.use(cors({
-    origin: 'http://localhost:3000'
-}));
+app.use(cors())
+const options = {
+    key: fs.readFileSync("./api/config/ca.key"),
+    cert: fs.readFileSync("./api/config/ca.crt"),
+  };
+
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -38,9 +42,11 @@ require('./api/routes/user.router')(app)
 
 
 const port = dbconfig.PORT || 8080
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}.`);
-})
+// app.listen(port, () => {
+//     console.log(`Server is running on port ${port}.`);
+// })
+https.createServer(options, app).listen(3003, () => {
+    console.log(`HTTPS server started on port ${dbconfig.PORT}}`);
+});
 
-console.log('RESTful API server started on: ' + port)
 

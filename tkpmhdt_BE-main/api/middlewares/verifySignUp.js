@@ -19,7 +19,7 @@ module.exports = {
                 return;
             }
         } catch (err) {
-            res.status(500).send({ message: err });
+            res.status(500).send({ message: 'register failed' });
             return;
         }
         next();
